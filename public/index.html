@@ -1,1 +1,157 @@
+DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Jeeshu AI — Image Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<!-- ── SIDEBAR OVERLAY (dark backdrop when sidebar open) ── -->
+<div id="ov"></div>
+
+<!-- ── SIDEBAR ── -->
+<div id="sb">
+  <div class="sb-top">
+    <div class="sb-logo"><span class="sb-dot"></span> Jeeshu AI</div>
+    <button class="sb-new" id="newBtn">
+      <i class="fas fa-plus"></i> Create New Image
+    </button>
+  </div>
+  <div class="sb-lbl">Recent</div>
+  <div class="hlist" id="hlist">
+    <!-- History items are added here by JavaScript -->
+  </div>
+  <div class="sb-foot">
+    <div class="sb-btn"><i class="fas fa-circle-question"></i> Help</div>
+    <div class="sb-btn"><i class="fas fa-gear"></i> Settings</div>
+    <div class="sb-btn">
+      <i class="fas fa-crown"></i> Free Plan
+      <span class="plan-pill">Upgrade</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOP NAV BAR ── -->
+<header class="topbar">
+  <div class="tp-l">
+    <!-- Hamburger button opens sidebar -->
+    <div class="hbg" id="menuBtn"><i class="fas fa-bars"></i></div>
+    <span class="tp-brand">Jeeshu AI</span>
+  </div>
+  <button class="tp-login" id="loginBtn">Login</button>
+</header>
+
+<!-- ── MAIN CHAT AREA ── -->
+<!-- Messages appear here: user prompts on right, AI images on left -->
+<div class="chat" id="chat">
+  <!-- Empty state shown before any generation -->
+  <div class="empty" id="empty">
+    <div class="e-icon">✦</div>
+    <div class="e-h">Create with Jeeshu AI</div>
+    <div class="e-p">Describe your vision or upload a reference image to generate stunning AI art.</div>
+  </div>
+</div>
+
+<!-- ── PREFERENCES POPUP (opens when sliders button clicked) ── -->
+<div class="pp" id="pp">
+  <div class="pp-hd">
+    <span>Preferences</span>
+    <span class="pp-rst" id="rstBtn" title="Reset to defaults">↺</span>
+  </div>
+  <!-- Aspect Ratio row — clicking opens ratio sub-panel -->
+  <div class="pp-row" id="oRatio">
+    <div class="pp-l"><i class="fas fa-crop-alt"></i> Aspect ratio</div>
+    <div class="pp-r"><span id="rLbl">Auto</span><i class="fas fa-chevron-right"></i></div>
+  </div>
+  <!-- Count row — clicking opens count sub-panel -->
+  <div class="pp-row" id="oCount">
+    <div class="pp-l"><i class="fas fa-images"></i> Count</div>
+    <div class="pp-r"><span id="cLbl">1 image</span><i class="fas fa-chevron-right"></i></div>
+  </div>
+</div>
+
+<!-- ── ASPECT RATIO SUB-PANEL ── -->
+<div class="sp" id="rPop">
+  <div class="sp-hd" id="bkR"><i class="fas fa-chevron-left"></i> Aspect ratio</div>
+  <!-- Options injected by JavaScript -->
+</div>
+
+<!-- ── COUNT SUB-PANEL ── -->
+<div class="sp" id="cPop">
+  <div class="sp-hd" id="bkC"><i class="fas fa-chevron-left"></i> Count</div>
+  <!-- Options injected by JavaScript -->
+</div>
+
+<!-- ── BOTTOM INPUT BAR ── -->
+<div class="bar">
+  <div class="chatbox">
+    <!-- Shows a thumbnail when user selects an image -->
+    <div class="upstrip" id="ups">
+      <div class="upwrap">
+        <img class="upthumb" id="upTh" src="" alt="Uploaded reference">
+        <div class="uprm" id="upRm" title="Remove image">✕</div>
+      </div>
+      <span class="upname" id="upName">Reference image</span>
+    </div>
+    <!-- Text input for the image prompt -->
+    <textarea class="ta" id="ta" placeholder="Describe your cinematic vision…" rows="1"></textarea>
+    <div class="brow">
+      <div class="bl">
+        <!-- Upload button (left side) -->
+        <div class="ib" id="upBtn" title="Upload reference image">
+          <i class="fas fa-image"></i>
+        </div>
+      </div>
+      <div class="br">
+        <!-- Preferences / settings button -->
+        <div class="ib" id="prefBtn" title="Image preferences">
+          <i class="fas fa-sliders-h"></i>
+        </div>
+        <!-- Send button — glows white when ready -->
+        <div class="sendb" id="sendBtn" title="Generate image">
+          <i class="fas fa-arrow-up"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FULLSCREEN IMAGE VIEWER ── -->
+<!-- Opens when user taps a generated image -->
+<div id="vw">
+  <div class="vx" id="vwX" title="Close"><i class="fas fa-times"></i></div>
+  <div class="vi"><img id="vwImg" src="" alt="Full size image"></div>
+  <div class="vbar">
+    <button class="vbtn" id="vwDl"><i class="fas fa-download"></i> Download</button>
+    <button class="vbtn" id="vwSh"><i class="fas fa-share-alt"></i> Share</button>
+    <button class="vbtn del" id="vwDel"><i class="fas fa-trash"></i> Delete</button>
+  </div>
+</div>
+
+<!-- ── LOGIN MODAL ── -->
+<div id="lm">
+  <div class="mbox">
+    <span class="mx" id="mX">✕</span>
+    <div class="mico">✦</div>
+    <div class="mt">Jeeshu AI</div>
+    <div class="ms">Your cinematic image studio</div>
+    <button class="sbtn"><i class="fab fa-google"></i> Continue with Google</button>
+    <button class="sbtn"><i class="fab fa-apple"></i> Continue with Apple</button>
+    <button class="sbtn"><i class="fas fa-envelope"></i> Continue with Email</button>
+  </div>
+</div>
+
+<!-- Hidden file input — triggered by the upload button -->
+<input type="file" id="fi" accept="image/*" style="display:none">
+
+<!-- Font Awesome icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Our JavaScript logic -->
+<script src="app.js"></script>
+</body>
+</html>
